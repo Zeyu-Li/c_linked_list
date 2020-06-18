@@ -37,28 +37,16 @@ struct slinked_list *allocate () {
     return(list);
 }
 
-void init_list(struct slinked_list *first, struct slinked_list *current, object_type new_item) {
-    // inits list
-    first = allocate();
-    current = first;
-
-    // sets new item
-    first->object_var = new_item;
-}
-
-void push(struct slinked_list *current, object_type new_item) {
+struct slinked_list *push(struct slinked_list *current, object_type new_item) {
     // given the linked list and a new element, 
     // the new element will be appended to the list
-    struct slinked_list *new;
 
     // allocate memory for new node
-    new = allocate();
-
-    // appends to list and sets new item
-    current->next = new;
+    current->next = allocate();
+    current = current->next;
     current->object_var = new_item;
 
-    current = new;
+    return(current);
 }
 
 void clear(int count, ...) {
@@ -68,7 +56,7 @@ void clear(int count, ...) {
 }
 
 void print(struct slinked_list *first) {
-    while (first->next != NULL) {
+    while (first != NULL) {
         printf("The number: %d", first->object_var);
         putchar('\n');
         first = first->next;
@@ -78,15 +66,19 @@ void print(struct slinked_list *first) {
 int main() {
     // inits list
     struct slinked_list *first, *current;
-    init_list(first, current, 4);
+    
+    first = allocate();
+    current = first;
+    current->object_var = 4;
     
     // appends to list
-    push(current, 10);
-    push(current, 11);
+    current = push(current, 10);
+    current = push(current, 11);
+    current = push(current, 13);
 
-    printf("%d", first->object_var);
+    // printf("%d", first->object_var);
 
-    // print(first);
+    print(first);
 
     // clear pointer
     // clear(2, first, current);
