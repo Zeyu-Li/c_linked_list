@@ -1,5 +1,5 @@
 /* Singly Linked List by Andrew Li
-* functions include init_list, push, free print
+* functions include init_list, push, free, print_list, print
 */ 
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,13 +49,23 @@ struct slinked_list *push(struct slinked_list *current, object_type new_item) {
     return(current);
 }
 
-void clear(int count, ...) {
-    // clears pointers and excepts a variable amount of list nodes given the count as the first arg
-    va_list lst;
-    // free(list);
+struct slinked_list *get_next(struct slinked_list *current) {
+    // gets the next node as a pointer
+    return(current->next);
 }
 
-void print(struct slinked_list *first) {
+void set_next(struct slinked_list *current, struct slinked_list *next) {
+    // sets the next node
+    current->next = next;
+}
+
+void remove_next(struct slinked_list *current) {
+    // unlinks the next node (does not connect to the next one, just unlinks from the next node)
+    current->next = NULL;
+}
+
+void print_list(struct slinked_list *first) {
+    // prints a list off the rest of the nodes, starting from the node passed in
     while (first != NULL) {
         printf("The number: %d", first->object_var);
         putchar('\n');
@@ -63,6 +73,13 @@ void print(struct slinked_list *first) {
     }
 }
 
+void print(struct slinked_list *list) {
+    // prints current node
+    printf("The number: %d", list->object_var);
+    putchar('\n');
+}
+
+// comment the following out if you are planning on using this
 int main() {
     // inits list
     struct slinked_list *first, *current;
@@ -76,12 +93,11 @@ int main() {
     current = push(current, 11);
     current = push(current, 13);
 
-    // printf("%d", first->object_var);
-
-    print(first);
+    print_list(first);
 
     // clear pointer
-    // clear(2, first, current);
+    free(first);
+    free(current);
 
     return(0);
 }
